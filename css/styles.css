@@ -15,13 +15,16 @@
   --color-lavanda: #6a5acd;
   --color-lavanda-oscura: #4b3f9e;
   --color-lavanda-suave: #efecfb;
+  --color-lavanda-borde: #d6d0f5;
 
   --color-cielo: #e3f0fa;
   --color-cielo-borde: #c4ddf0;
   --color-durazno: #fdeadf;
   --color-durazno-borde: #f3cdb8;
+  --color-durazno-texto: #9a3412;
   --color-menta: #e2f4ea;
   --color-menta-borde: #bfe3cd;
+  --color-menta-texto: #2f6b4f;
 
   --color-error: #b42318;
   --color-error-suave: #fdecea;
@@ -153,7 +156,8 @@ h2 {
 }
 
 .campo input,
-.campo textarea {
+.campo textarea,
+.campo select {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--color-borde-campo);
@@ -167,9 +171,17 @@ h2 {
   resize: vertical;
 }
 
-.campo input[type="date"] {
+.campo input[type="date"],
+.campo select {
   width: auto;
   max-width: 100%;
+}
+
+/* Fecha y prioridad comparten fila; en pantallas angostas bajan una debajo de otra */
+.formulario__fila {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 24px;
 }
 
 .campo [aria-invalid="true"] {
@@ -323,11 +335,44 @@ h2 {
   white-space: pre-line;
 }
 
+.tarea__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
 .tarea__fecha {
-  display: inline-block;
-  margin-top: 4px;
   color: var(--color-texto-secundario);
   font-size: 0.8125rem;
+}
+
+.prioridad {
+  padding: 0 8px;
+  border: 1px solid;
+  border-radius: var(--radio);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.prioridad--alta {
+  border-color: var(--color-durazno-borde);
+  background: var(--color-durazno);
+  color: var(--color-durazno-texto);
+}
+
+.prioridad--media {
+  border-color: var(--color-lavanda-borde);
+  background: var(--color-lavanda-suave);
+  color: var(--color-lavanda-oscura);
+}
+
+.prioridad--baja {
+  border-color: var(--color-menta-borde);
+  background: var(--color-menta);
+  color: var(--color-menta-texto);
 }
 
 .tarea__acciones {

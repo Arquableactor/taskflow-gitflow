@@ -48,10 +48,21 @@
           <p class="campo__error" id="error-descripcion"></p>
         </div>
 
-        <div class="campo">
-          <label for="fecha">Fecha <span class="texto-secundario">(opcional)</span></label>
-          <input id="fecha" name="fecha" type="date" aria-describedby="error-fecha">
-          <p class="campo__error" id="error-fecha"></p>
+        <div class="formulario__fila">
+          <div class="campo">
+            <label for="fecha">Fecha <span class="texto-secundario">(opcional)</span></label>
+            <input id="fecha" name="fecha" type="date" aria-describedby="error-fecha">
+            <p class="campo__error" id="error-fecha"></p>
+          </div>
+
+          <div class="campo">
+            <label for="prioridad">Prioridad</label>
+            <select id="prioridad" name="prioridad">
+              <option value="alta">Alta</option>
+              <option value="media" selected>Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
         </div>
 
         <div class="formulario__acciones">
