@@ -171,6 +171,10 @@ h2 {
   resize: vertical;
 }
 
+.campo input::placeholder {
+  color: var(--color-texto-secundario);
+}
+
 .campo input[type="date"],
 .campo select {
   width: auto;
@@ -251,7 +255,7 @@ h2 {
   background: var(--color-error-suave);
 }
 
-/* 7. Filtros */
+/* 7. Filtros y busqueda */
 .panel__cabecera {
   display: flex;
   flex-wrap: wrap;
@@ -288,6 +292,11 @@ h2 {
   background: var(--color-lavanda-suave);
   color: var(--color-lavanda-oscura);
   font-weight: 600;
+}
+
+/* El buscador reutiliza los estilos de .campo; solo ajusta su espacio */
+.buscador {
+  margin: 12px 0 4px;
 }
 
 /* 8. Listado: filas separadas por lineas finas, sin cajas */
