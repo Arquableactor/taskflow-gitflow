@@ -143,6 +143,51 @@ h2 {
   background: var(--color-menta);
 }
 
+/* Barra de avance: ocupa el ancho de las tres tarjetas */
+.avance {
+  grid-column: 1 / -1;
+  padding: 12px 16px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+.avance__texto {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.875rem;
+}
+
+.avance__texto label {
+  font-weight: 600;
+}
+
+.avance__barra {
+  display: block;
+  width: 100%;
+  height: 8px;
+  border: none;
+  border-radius: var(--radio);
+  background: var(--color-lavanda-suave);
+  appearance: none;
+}
+
+.avance__barra::-webkit-progress-bar {
+  border-radius: var(--radio);
+  background: var(--color-lavanda-suave);
+}
+
+.avance__barra::-webkit-progress-value {
+  border-radius: var(--radio);
+  background: var(--color-lavanda);
+}
+
+.avance__barra::-moz-progress-bar {
+  border-radius: var(--radio);
+  background: var(--color-lavanda);
+}
+
 /* 5. Formulario */
 .campo {
   margin-bottom: 14px;
