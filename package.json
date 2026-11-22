@@ -1,0 +1,12 @@
+{
+  "name": "taskflow-gitflow",
+  "version": "0.1.0",
+  "description": "Aplicacion de gestion de tareas con JavaScript vanilla y localStorage",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "test": "node --test"
+  },
+  "license": "MIT"
+}
