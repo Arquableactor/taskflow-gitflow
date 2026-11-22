@@ -1,4 +1,5 @@
 import { formatearFecha } from './dates.js';
+import { normalizarPrioridad } from './priority.js';
 
 // Genera el HTML del listado como texto para poder probarlo en Node sin navegador
 
@@ -14,6 +15,7 @@ export function escaparHTML(texto) {
 export function crearFilaTarea(tarea) {
   const titulo = escaparHTML(tarea.titulo);
   const fecha = formatearFecha(tarea.fecha);
+  const prioridad = normalizarPrioridad(tarea.prioridad);
   const clases = tarea.completada ? 'tarea tarea--completada' : 'tarea';
 
   return `
@@ -23,7 +25,10 @@ export function crearFilaTarea(tarea) {
       <div class="tarea__contenido">
         <p class="tarea__titulo">${titulo}</p>
         ${tarea.descripcion ? `<p class="tarea__descripcion">${escaparHTML(tarea.descripcion)}</p>` : ''}
-        ${fecha ? `<time class="tarea__fecha" datetime="${escaparHTML(tarea.fecha)}">${fecha}</time>` : ''}
+        <div class="tarea__meta">
+          <span class="prioridad prioridad--${prioridad}">Prioridad ${prioridad}</span>
+          ${fecha ? `<time class="tarea__fecha" datetime="${escaparHTML(tarea.fecha)}">${fecha}</time>` : ''}
+        </div>
       </div>
       <div class="tarea__acciones">
         <button type="button" class="boton boton--texto" data-accion="editar" aria-label="Editar: ${titulo}">Editar</button>

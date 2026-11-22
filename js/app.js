@@ -3,6 +3,7 @@ import { MAX_DESCRIPCION, MAX_TITULO, validarTarea } from './validation.js';
 import { FILTROS, filtrarTareas } from './filters.js';
 import { resumirTareas } from './dashboard.js';
 import { renderizarListado } from './task-view.js';
+import { normalizarPrioridad, ordenarPorPrioridad } from './priority.js';
 
 // Referencias a la interfaz
 const formulario = document.querySelector('#formulario-tarea');
@@ -11,6 +12,8 @@ const campos = {
   descripcion: formulario.elements.descripcion,
   fecha: formulario.elements.fecha
 };
+// Fuera de "campos" porque el select no puede tener errores de validacion
+const campoPrioridad = formulario.elements.prioridad;
 const tituloFormulario = document.querySelector('#titulo-formulario');
 const botonGuardar = document.querySelector('#boton-guardar');
 const botonCancelar = document.querySelector('#boton-cancelar');
@@ -33,7 +36,7 @@ campos.titulo.maxLength = MAX_TITULO;
 campos.descripcion.maxLength = MAX_DESCRIPCION;
 
 function mostrar() {
-  lista.innerHTML = renderizarListado(filtrarTareas(tareas, filtroActual));
+  lista.innerHTML = renderizarListado(ordenarPorPrioridad(filtrarTareas(tareas, filtroActual)));
 
   const resumen = resumirTareas(tareas);
   contadores.total.textContent = resumen.total;
@@ -83,6 +86,7 @@ function empezarEdicion(tarea) {
   campos.titulo.value = tarea.titulo;
   campos.descripcion.value = tarea.descripcion;
   campos.fecha.value = tarea.fecha;
+  campoPrioridad.value = normalizarPrioridad(tarea.prioridad);
   mostrarErrores({});
   tituloFormulario.textContent = 'Editar tarea';
   botonGuardar.textContent = 'Guardar cambios';
@@ -101,10 +105,12 @@ formulario.addEventListener('submit', (evento) => {
   mostrarErrores(errores);
   if (!valida) return;
 
+  const prioridad = normalizarPrioridad(campoPrioridad.value);
+
   if (idEditando) {
-    tareas = tareas.map((tarea) => (tarea.id === idEditando ? { ...tarea, ...datos } : tarea));
+    tareas = tareas.map((tarea) => (tarea.id === idEditando ? { ...tarea, ...datos, prioridad } : tarea));
   } else {
-    tareas = [{ id: crypto.randomUUID(), ...datos, completada: false }, ...tareas];
+    tareas = [{ id: crypto.randomUUID(), ...datos, prioridad, completada: false }, ...tareas];
   }
 
   reiniciarFormulario();
