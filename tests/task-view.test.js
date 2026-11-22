@@ -23,6 +23,17 @@ test('la fila muestra titulo, descripcion, fecha legible e id', () => {
   assert.ok(html.includes('<time class="tarea__fecha" datetime="2026-11-25">25 nov 2026</time>'));
 });
 
+test('la fila muestra la etiqueta de prioridad', () => {
+  const html = crearFilaTarea({ ...tarea, prioridad: 'alta' });
+
+  assert.ok(html.includes('<span class="prioridad prioridad--alta">Prioridad alta</span>'));
+});
+
+test('una tarea sin prioridad o con un valor invalido se muestra como media', () => {
+  assert.ok(crearFilaTarea(tarea).includes('prioridad--media">Prioridad media<'));
+  assert.ok(crearFilaTarea({ ...tarea, prioridad: '"><script>' }).includes('prioridad--media">Prioridad media<'));
+});
+
 test('la fila omite descripcion y fecha cuando estan vacias', () => {
   const html = crearFilaTarea({ ...tarea, descripcion: '', fecha: '' });
 
