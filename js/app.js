@@ -4,6 +4,7 @@ import { FILTROS, filtrarTareas } from './filters.js';
 import { resumirTareas } from './dashboard.js';
 import { renderizarListado } from './task-view.js';
 import { normalizarPrioridad, ordenarPorPrioridad } from './priority.js';
+import { buscarTareas } from './search.js';
 
 // Referencias a la interfaz
 const formulario = document.querySelector('#formulario-tarea');
@@ -19,6 +20,7 @@ const botonGuardar = document.querySelector('#boton-guardar');
 const botonCancelar = document.querySelector('#boton-cancelar');
 const lista = document.querySelector('#lista-tareas');
 const botonesFiltro = document.querySelectorAll('[data-filtro]');
+const campoBusqueda = document.querySelector('#busqueda');
 const aviso = document.querySelector('#aviso');
 const contadores = {
   total: document.querySelector('#contador-total'),
@@ -36,7 +38,9 @@ campos.titulo.maxLength = MAX_TITULO;
 campos.descripcion.maxLength = MAX_DESCRIPCION;
 
 function mostrar() {
-  lista.innerHTML = renderizarListado(ordenarPorPrioridad(filtrarTareas(tareas, filtroActual)));
+  // Primero el filtro de estado, luego la busqueda y al final el orden por prioridad
+  const visibles = buscarTareas(filtrarTareas(tareas, filtroActual), campoBusqueda.value);
+  lista.innerHTML = renderizarListado(ordenarPorPrioridad(visibles));
 
   const resumen = resumirTareas(tareas);
   contadores.total.textContent = resumen.total;
@@ -153,5 +157,8 @@ botonesFiltro.forEach((boton) => {
     mostrar();
   });
 });
+
+// Los resultados se actualizan con cada letra que se escribe o se borra
+campoBusqueda.addEventListener('input', mostrar);
 
 mostrar();
