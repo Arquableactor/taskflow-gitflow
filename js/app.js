@@ -25,8 +25,10 @@ const aviso = document.querySelector('#aviso');
 const contadores = {
   total: document.querySelector('#contador-total'),
   pendientes: document.querySelector('#contador-pendientes'),
-  completadas: document.querySelector('#contador-completadas')
+  completadas: document.querySelector('#contador-completadas'),
+  porcentaje: document.querySelector('#porcentaje-avance')
 };
+const barraAvance = document.querySelector('#barra-avance');
 
 // Estado de la aplicacion
 let tareas = cargarTareas();
@@ -46,6 +48,8 @@ function mostrar() {
   contadores.total.textContent = resumen.total;
   contadores.pendientes.textContent = resumen.pendientes;
   contadores.completadas.textContent = resumen.completadas;
+  contadores.porcentaje.textContent = `${resumen.porcentaje}%`;
+  barraAvance.value = resumen.porcentaje;
 
   botonesFiltro.forEach((boton) => {
     boton.setAttribute('aria-pressed', String(boton.dataset.filtro === filtroActual));
