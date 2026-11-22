@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaskFlow</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <main class="contenedor">
+    <header class="encabezado">
+      <h1>TaskFlow</h1>
+      <p class="texto-secundario">Organiza tus tareas del día.</p>
+    </header>
+
+    <p id="aviso" class="aviso" role="alert" hidden></p>
+
+    <section class="resumen" aria-label="Resumen de tareas">
+      <div class="estadistica estadistica--total">
+        <span class="estadistica__valor" id="contador-total">0</span>
+        <span class="estadistica__nombre">Total</span>
+      </div>
+      <div class="estadistica estadistica--pendientes">
+        <span class="estadistica__valor" id="contador-pendientes">0</span>
+        <span class="estadistica__nombre">Pendientes</span>
+      </div>
+      <div class="estadistica estadistica--completadas">
+        <span class="estadistica__valor" id="contador-completadas">0</span>
+        <span class="estadistica__nombre">Completadas</span>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="titulo-formulario">
+      <h2 class="panel__titulo" id="titulo-formulario">Nueva tarea</h2>
+
+      <form id="formulario-tarea" novalidate>
+        <div class="campo">
+          <label for="titulo">Título</label>
+          <input id="titulo" name="titulo" type="text" autocomplete="off" aria-describedby="error-titulo">
+          <p class="campo__error" id="error-titulo"></p>
+        </div>
+
+        <div class="campo">
+          <label for="descripcion">Descripción <span class="texto-secundario">(opcional)</span></label>
+          <textarea id="descripcion" name="descripcion" rows="3" aria-describedby="error-descripcion"></textarea>
+          <p class="campo__error" id="error-descripcion"></p>
+        </div>
+
+        <div class="campo">
+          <label for="fecha">Fecha <span class="texto-secundario">(opcional)</span></label>
+          <input id="fecha" name="fecha" type="date" aria-describedby="error-fecha">
+          <p class="campo__error" id="error-fecha"></p>
+        </div>
+
+        <div class="formulario__acciones">
+          <button type="submit" class="boton boton--principal" id="boton-guardar">Agregar tarea</button>
+          <button type="button" class="boton" id="boton-cancelar" hidden>Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="titulo-listado">
+      <div class="panel__cabecera">
+        <h2 id="titulo-listado">Mis tareas</h2>
+        <div class="filtros" role="group" aria-label="Filtrar tareas">
+          <button type="button" class="filtro" data-filtro="todas" aria-pressed="true">Todas</button>
+          <button type="button" class="filtro" data-filtro="pendientes" aria-pressed="false">Pendientes</button>
+          <button type="button" class="filtro" data-filtro="completadas" aria-pressed="false">Completadas</button>
+        </div>
+      </div>
+
+      <ul id="lista-tareas" class="lista"></ul>
+    </section>
+  </main>
+</body>
+</html>

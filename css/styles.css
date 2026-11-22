@@ -1,0 +1,385 @@
+/* TaskFlow - estilos
+   1. Variables   2. Base        3. Estructura   4. Resumen
+   5. Formulario  6. Botones     7. Filtros      8. Listado
+   9. Pantallas pequenas */
+
+/* 1. Variables */
+:root {
+  --color-fondo: #faf8f5;
+  --color-superficie: #ffffff;
+  --color-borde: #e7e2db;
+  --color-borde-campo: #8c8798;
+  --color-texto: #2b2a33;
+  --color-texto-secundario: #5f5b6b;
+
+  --color-lavanda: #6a5acd;
+  --color-lavanda-oscura: #4b3f9e;
+  --color-lavanda-suave: #efecfb;
+
+  --color-cielo: #e3f0fa;
+  --color-cielo-borde: #c4ddf0;
+  --color-durazno: #fdeadf;
+  --color-durazno-borde: #f3cdb8;
+  --color-menta: #e2f4ea;
+  --color-menta-borde: #bfe3cd;
+
+  --color-error: #b42318;
+  --color-error-suave: #fdecea;
+
+  --radio: 6px;
+}
+
+/* 2. Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.125rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lavanda);
+  outline-offset: 2px;
+}
+
+.texto-secundario {
+  color: var(--color-texto-secundario);
+  font-weight: normal;
+}
+
+/* 3. Estructura */
+.contenedor {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+}
+
+.encabezado {
+  margin-bottom: 24px;
+}
+
+.panel {
+  margin-top: 16px;
+  padding: 20px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+.panel__titulo {
+  margin-bottom: 16px;
+}
+
+.aviso {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-error);
+  border-radius: var(--radio);
+  background: var(--color-error-suave);
+  color: var(--color-error);
+}
+
+/* 4. Resumen */
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.estadistica {
+  padding: 14px 16px;
+  border: 1px solid;
+  border-radius: var(--radio);
+}
+
+.estadistica__valor {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.estadistica__nombre {
+  font-size: 0.875rem;
+}
+
+.estadistica--total {
+  border-color: var(--color-cielo-borde);
+  background: var(--color-cielo);
+}
+
+.estadistica--pendientes {
+  border-color: var(--color-durazno-borde);
+  background: var(--color-durazno);
+}
+
+.estadistica--completadas {
+  border-color: var(--color-menta-borde);
+  background: var(--color-menta);
+}
+
+/* 5. Formulario */
+.campo {
+  margin-bottom: 14px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-borde-campo);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+  color: inherit;
+  font: inherit;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo input[type="date"] {
+  width: auto;
+  max-width: 100%;
+}
+
+.campo [aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.campo__error {
+  margin-top: 4px;
+  color: var(--color-error);
+  font-size: 0.875rem;
+}
+
+.campo__error:empty {
+  display: none;
+}
+
+.formulario__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 6. Botones */
+.boton {
+  padding: 8px 16px;
+  border: 1px solid var(--color-borde-campo);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font: inherit;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background: var(--color-fondo);
+}
+
+.boton--principal {
+  border-color: var(--color-lavanda);
+  background: var(--color-lavanda);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.boton--principal:hover {
+  border-color: var(--color-lavanda-oscura);
+  background: var(--color-lavanda-oscura);
+}
+
+.boton--texto {
+  padding: 4px 8px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-lavanda-oscura);
+  font-size: 0.875rem;
+}
+
+.boton--texto:hover {
+  background: var(--color-lavanda-suave);
+}
+
+.boton--peligro {
+  color: var(--color-error);
+}
+
+.boton--peligro:hover {
+  background: var(--color-error-suave);
+}
+
+/* 7. Filtros */
+.panel__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filtro {
+  padding: 4px 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+  color: var(--color-texto-secundario);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.filtro:hover {
+  border-color: var(--color-lavanda);
+}
+
+.filtro[aria-pressed="true"] {
+  border-color: var(--color-lavanda);
+  background: var(--color-lavanda-suave);
+  color: var(--color-lavanda-oscura);
+  font-weight: 600;
+}
+
+/* 8. Listado: filas separadas por lineas finas, sin cajas */
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tarea {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tarea:last-child {
+  border-bottom: none;
+}
+
+.tarea__check {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 3px 0 0;
+  accent-color: var(--color-lavanda);
+  cursor: pointer;
+}
+
+.tarea__contenido {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tarea__titulo {
+  font-weight: 600;
+}
+
+.tarea__descripcion {
+  margin-top: 2px;
+  color: var(--color-texto-secundario);
+  font-size: 0.9375rem;
+  white-space: pre-line;
+}
+
+.tarea__fecha {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--color-texto-secundario);
+  font-size: 0.8125rem;
+}
+
+.tarea__acciones {
+  display: flex;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.tarea--completada .tarea__titulo {
+  color: var(--color-texto-secundario);
+  text-decoration: line-through;
+}
+
+.lista-vacia {
+  padding: 24px 0;
+  color: var(--color-texto-secundario);
+  text-align: center;
+}
+
+/* 9. Pantallas pequenas */
+@media (max-width: 480px) {
+  .contenedor {
+    padding-top: 20px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .resumen {
+    gap: 8px;
+  }
+
+  .estadistica {
+    padding: 10px;
+  }
+
+  .estadistica__valor {
+    font-size: 1.375rem;
+  }
+
+  .estadistica__nombre {
+    font-size: 0.8125rem;
+  }
+
+  .tarea {
+    flex-wrap: wrap;
+  }
+
+  /* Las acciones bajan a su propia linea, alineadas con el texto de la tarea */
+  .tarea__acciones {
+    width: 100%;
+    padding-left: 30px;
+  }
+}
