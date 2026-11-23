@@ -2,8 +2,8 @@ import { cargarTareas, guardarTareas } from './storage.js';
 import { MAX_DESCRIPCION, MAX_TITULO, validarTarea } from './validation.js';
 import { FILTROS, filtrarTareas } from './filters.js';
 import { resumirTareas } from './dashboard.js';
-import { renderizarListado } from './task-view.js';
-import { normalizarPrioridad, ordenarPorPrioridad } from './priority.js';
+import { mensajeListaVacia, renderizarListado } from './task-view.js';
+import { PRIORIDAD_POR_DEFECTO, normalizarPrioridad, ordenarPorPrioridad } from './priority.js';
 import { buscarTareas } from './search.js';
 import { exportarJSON, importarJSON } from './backup.js';
 
@@ -49,8 +49,15 @@ campos.descripcion.maxLength = MAX_DESCRIPCION;
 
 function mostrar() {
   // Primero el filtro de estado, luego la busqueda y al final el orden por prioridad
-  const visibles = buscarTareas(filtrarTareas(tareas, filtroActual), campoBusqueda.value);
-  lista.innerHTML = renderizarListado(ordenarPorPrioridad(visibles));
+  const enFiltro = filtrarTareas(tareas, filtroActual);
+  const visibles = buscarTareas(enFiltro, campoBusqueda.value);
+  const mensajeVacio = mensajeListaVacia({
+    total: tareas.length,
+    enFiltro: enFiltro.length,
+    filtro: filtroActual,
+    busqueda: campoBusqueda.value
+  });
+  lista.innerHTML = renderizarListado(ordenarPorPrioridad(visibles), mensajeVacio);
 
   const resumen = resumirTareas(tareas);
   contadores.total.textContent = resumen.total;
@@ -91,6 +98,8 @@ function mostrarErrores(errores) {
 function reiniciarFormulario() {
   idEditando = null;
   formulario.reset();
+  // El valor por defecto sale de priority.js y no depende del atributo selected del HTML
+  campoPrioridad.value = PRIORIDAD_POR_DEFECTO;
   mostrarErrores({});
   tituloFormulario.textContent = 'Nueva tarea';
   botonGuardar.textContent = 'Agregar tarea';
@@ -131,6 +140,8 @@ formulario.addEventListener('submit', (evento) => {
 
   reiniciarFormulario();
   guardarYMostrar();
+  // Listo para escribir la siguiente tarea sin volver a hacer clic en el titulo
+  campos.titulo.focus();
 });
 
 botonCancelar.addEventListener('click', reiniciarFormulario);
