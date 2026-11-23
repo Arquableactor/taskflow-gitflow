@@ -96,6 +96,17 @@
 
       <ul id="lista-tareas" class="lista"></ul>
     </section>
+
+    <section class="panel" aria-labelledby="titulo-respaldo">
+      <h2 class="panel__titulo" id="titulo-respaldo">Respaldo</h2>
+      <p class="texto-secundario respaldo__ayuda">Guarda tus tareas en un archivo JSON o restáuralas desde uno.</p>
+      <div class="respaldo__acciones">
+        <button type="button" class="boton" id="boton-exportar">Exportar JSON</button>
+        <button type="button" class="boton" id="boton-importar">Importar JSON</button>
+        <input type="file" id="archivo-importar" accept=".json,application/json" hidden>
+      </div>
+      <p id="mensaje-respaldo" class="respaldo__mensaje" role="status"></p>
+    </section>
   </main>
 </body>
 </html>
