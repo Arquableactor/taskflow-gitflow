@@ -5,6 +5,10 @@ import { resumirTareas } from './dashboard.js';
 import { renderizarListado } from './task-view.js';
 import { normalizarPrioridad, ordenarPorPrioridad } from './priority.js';
 import { buscarTareas } from './search.js';
+import { exportarJSON, importarJSON } from './backup.js';
+
+// Un respaldo de miles de tareas pesa mucho menos; esto evita congelar la pagina con archivos enormes
+const TAMANO_MAXIMO_ARCHIVO = 1_000_000;
 
 // Referencias a la interfaz
 const formulario = document.querySelector('#formulario-tarea');
@@ -29,6 +33,10 @@ const contadores = {
   porcentaje: document.querySelector('#porcentaje-avance')
 };
 const barraAvance = document.querySelector('#barra-avance');
+const botonExportar = document.querySelector('#boton-exportar');
+const botonImportar = document.querySelector('#boton-importar');
+const campoArchivo = document.querySelector('#archivo-importar');
+const mensajeRespaldo = document.querySelector('#mensaje-respaldo');
 
 // Estado de la aplicacion
 let tareas = cargarTareas();
@@ -164,5 +172,56 @@ botonesFiltro.forEach((boton) => {
 
 // Los resultados se actualizan con cada letra que se escribe o se borra
 campoBusqueda.addEventListener('input', mostrar);
+
+function avisarRespaldo(texto, esError = false) {
+  mensajeRespaldo.textContent = texto;
+  mensajeRespaldo.classList.toggle('respaldo__mensaje--error', esError);
+}
+
+botonExportar.addEventListener('click', () => {
+  if (tareas.length === 0) {
+    avisarRespaldo('No hay tareas para exportar.', true);
+    return;
+  }
+
+  const enlace = document.createElement('a');
+  enlace.href = URL.createObjectURL(new Blob([exportarJSON(tareas)], { type: 'application/json' }));
+  enlace.download = 'taskflow-tareas.json';
+  enlace.click();
+  // Se libera la URL temporal cuando el navegador ya inicio la descarga
+  setTimeout(() => URL.revokeObjectURL(enlace.href), 0);
+  avisarRespaldo(`Tareas exportadas: ${tareas.length}.`);
+});
+
+// El input de archivo esta oculto; este boton lo abre para tener un control accesible y con estilo propio
+botonImportar.addEventListener('click', () => campoArchivo.click());
+
+campoArchivo.addEventListener('change', async () => {
+  const archivo = campoArchivo.files[0];
+  // Se limpia para que elegir otra vez el mismo archivo vuelva a disparar "change"
+  campoArchivo.value = '';
+  if (!archivo) return;
+
+  try {
+    if (archivo.size > TAMANO_MAXIMO_ARCHIVO) throw new Error('El archivo es demasiado grande.');
+
+    const { tareas: importadas, descartadas } = importarJSON(await archivo.text());
+    const reemplazar = tareas.length === 0 ||
+      confirm(`Se reemplazarán tus ${tareas.length} tareas actuales por las ${importadas.length} del archivo. ¿Continuar?`);
+    if (!reemplazar) {
+      avisarRespaldo('Importación cancelada. Tus tareas no cambiaron.');
+      return;
+    }
+
+    tareas = importadas;
+    // La tarea que se estaba editando puede no existir en el archivo importado
+    reiniciarFormulario();
+    guardarYMostrar();
+    avisarRespaldo(`Tareas importadas: ${importadas.length}.` +
+      (descartadas > 0 ? ` Descartadas por inválidas o repetidas: ${descartadas}.` : ''));
+  } catch (error) {
+    avisarRespaldo(error.message, true);
+  }
+});
 
 mostrar();
