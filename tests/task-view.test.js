@@ -1,6 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { MENSAJE_SIN_TAREAS, crearFilaTarea, escaparHTML, renderizarListado } from '../js/task-view.js';
+import {
+  MENSAJE_SIN_TAREAS,
+  crearFilaTarea,
+  escaparHTML,
+  mensajeListaVacia,
+  renderizarListado
+} from '../js/task-view.js';
 
 const tarea = {
   id: 'abc-1',
@@ -72,4 +78,35 @@ test('el listado muestra una fila por tarea', () => {
 
 test('el listado vacio muestra el mensaje de sin tareas', () => {
   assert.equal(renderizarListado([]), `<li class="lista-vacia">${MENSAJE_SIN_TAREAS}</li>`);
+});
+
+test('sin tareas guardadas invita a crear la primera', () => {
+  assert.equal(
+    mensajeListaVacia({ total: 0, enFiltro: 0, filtro: 'todas', busqueda: '' }),
+    'Todavía no tienes tareas. Agrega la primera con el formulario.'
+  );
+  // Aunque haya filtro o busqueda activos, lo importante es que no existen tareas
+  assert.equal(mensajeListaVacia({ total: 0, enFiltro: 0, filtro: 'pendientes', busqueda: 'git' }), MENSAJE_SIN_TAREAS);
+});
+
+test('un filtro sin resultados lo indica segun el filtro', () => {
+  assert.equal(mensajeListaVacia({ total: 3, enFiltro: 0, filtro: 'pendientes', busqueda: '' }), 'No hay tareas pendientes.');
+  assert.equal(mensajeListaVacia({ total: 3, enFiltro: 0, filtro: 'completadas', busqueda: '' }), 'No hay tareas completadas.');
+});
+
+test('si el filtro ya esta vacio, se informa el filtro y no la busqueda', () => {
+  assert.equal(mensajeListaVacia({ total: 3, enFiltro: 0, filtro: 'completadas', busqueda: 'git' }), 'No hay tareas completadas.');
+});
+
+test('una busqueda sin resultados muestra el texto buscado', () => {
+  assert.equal(
+    mensajeListaVacia({ total: 3, enFiltro: 2, filtro: 'todas', busqueda: '  biologia ' }),
+    'Ninguna tarea coincide con «biologia».'
+  );
+});
+
+test('el listado vacio muestra el mensaje recibido escapado', () => {
+  const mensaje = mensajeListaVacia({ total: 1, enFiltro: 1, filtro: 'todas', busqueda: '<img src=x>' });
+
+  assert.equal(renderizarListado([], mensaje), '<li class="lista-vacia">Ninguna tarea coincide con «&lt;img src=x&gt;».</li>');
 });

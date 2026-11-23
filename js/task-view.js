@@ -3,7 +3,14 @@ import { normalizarPrioridad } from './priority.js';
 
 // Genera el HTML del listado como texto para poder probarlo en Node sin navegador
 
-export const MENSAJE_SIN_TAREAS = 'No hay tareas para mostrar.';
+export const MENSAJE_SIN_TAREAS = 'Todavía no tienes tareas. Agrega la primera con el formulario.';
+
+// Explica por que el listado quedo vacio: no hay tareas, el filtro no tiene resultados o la busqueda no coincide
+export function mensajeListaVacia({ total, enFiltro, filtro, busqueda }) {
+  if (total === 0) return MENSAJE_SIN_TAREAS;
+  if (enFiltro === 0) return `No hay tareas ${filtro}.`;
+  return `Ninguna tarea coincide con «${busqueda.trim()}».`;
+}
 
 const CARACTERES_HTML = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 
@@ -37,9 +44,10 @@ export function crearFilaTarea(tarea) {
     </li>`;
 }
 
-export function renderizarListado(tareas) {
+// El mensaje se escapa porque puede incluir el texto que el usuario busco
+export function renderizarListado(tareas, mensajeVacio = MENSAJE_SIN_TAREAS) {
   if (tareas.length === 0) {
-    return `<li class="lista-vacia">${MENSAJE_SIN_TAREAS}</li>`;
+    return `<li class="lista-vacia">${escaparHTML(mensajeVacio)}</li>`;
   }
   return tareas.map(crearFilaTarea).join('');
 }
